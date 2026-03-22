@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cápsulas de Vida · Abuelitos Contentos</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,900;1,9..144,600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --g:#C9963A;--gl:#E8C06A;--gp:#F5E8C8;
+  --dk:#1A0F05;--dp:#2C1A08;--wm:#3D2510;
+  --cr:#FAF3E8;--pc:#F0E4C8;
+  --sl:#8B2020;--sll:#C0392B;
+  --ts:#7A5535;--tg:#B89060;
+  --lf:#4A7C59;
+}
+html{scroll-behavior:smooth;}
+body{font-family:'Lora',serif;background:var(--dk);color:var(--cr);min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");}
+
+.sc{display:none;min-height:100vh;position:relative;z-index:1;}
+.sc.on{display:flex;flex-direction:column;}
+
+/* SHARED */
+.back{background:none;border:1px solid rgba(201,150,58,.3);color:var(--g);padding:.5rem 1rem;border-radius:100px;font-family:'Lora',serif;font-size:.85rem;cursor:pointer;transition:background .2s;}
+.back:hover{background:rgba(201,150,58,.1);}
+.btn-gold{background:linear-gradient(135deg,var(--g),#A07020);border:none;border-radius:12px;padding:1rem 1.5rem;color:#1A0F05;font-family:'Fraunces',serif;font-size:1rem;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s,transform .15s;letter-spacing:.5px;}
+.btn-gold:hover{opacity:.9;transform:translateY(-2px);}
+.btn-gold:active{transform:scale(.97);}
+.btn-gold:disabled{opacity:.3;pointer-events:none;}
+.btn-ghost{background:none;border:1px solid rgba(201,150,58,.25);color:var(--tg);border-radius:12px;padding:.85rem 1.5rem;font-family:'Lora',serif;font-size:.9rem;cursor:pointer;width:100%;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--g);color:var(--g);}
+.inp{background:rgba(201,150,58,.06);border:1.5px solid rgba(201,150,58,.3);border-radius:12px;padding:1rem 1.25rem;color:var(--cr);font-family:'Lora',serif;font-size:1.05rem;outline:none;width:100%;transition:border-color .2s;}
+.inp:focus{border-color:var(--g);}
+.inp::placeholder{color:var(--tg);font-style:italic;}
+.gdiv{height:1px;background:linear-gradient(90deg,transparent,rgba(201,150,58,.3),transparent);margin:1.1rem 0;}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid rgba(201,150,58,.25);border-top-color:var(--g);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:.35rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.75rem;left:50%;transform:translateX(-50%) translateY(16px);background:var(--dp);border:1px solid rgba(201,150,58,.3);color:var(--gl);padding:.65rem 1.4rem;border-radius:100px;font-size:.88rem;font-style:italic;z-index:9999;opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;max-width:90vw;text-align:center;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast.err{border-color:rgba(192,57,43,.4);color:#f0a090;}
+
+/* ═══════════════════════
+   FAMILIA SCREEN
+═══════════════════════ */
+#sc-fam{align-items:center;justify-content:center;padding:2rem 1.5rem;
+  background:radial-gradient(ellipse at 50% 40%,var(--wm),var(--dk) 70%);}
+.fam-box{width:100%;max-width:360px;text-align:center;}
+.fam-flame{font-size:3.2rem;margin-bottom:1rem;animation:flk 3s ease-in-out infinite alternate;}
+@keyframes flk{0%{opacity:.9;transform:scale(1);}100%{opacity:1;transform:scale(1.05);}}
+.fam-title{font-family:'Fraunces',serif;font-size:2.6rem;font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:.35rem;
+  background:linear-gradient(135deg,var(--gl),var(--g),#A07020);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.fam-sub{font-size:.88rem;color:var(--tg);font-style:italic;margin-bottom:2.2rem;}
+.tabs{display:flex;gap:.5rem;margin-bottom:1.35rem;}
+.tab{flex:1;padding:.6rem;border-radius:10px;border:1.5px solid rgba(201,150,58,.18);background:none;color:var(--tg);font-family:'Lora',serif;font-size:.85rem;cursor:pointer;transition:all .2s;}
+.tab.on{background:rgba(201,150,58,.1);border-color:var(--g);color:var(--gl);}
+.tpanel{flex-direction:column;gap:.9rem;}
+.tpanel.on{display:flex;}
+.code-inp{text-transform:uppercase;letter-spacing:4px;font-family:'Fraunces',serif;font-size:1.35rem;text-align:center;}
+
+/* ═══════════════════════
+   HOME SCREEN
+═══════════════════════ */
+#sc-home{align-items:center;justify-content:center;text-align:center;padding:2rem 1.5rem;
+  background:radial-gradient(ellipse at 50% 30%,var(--wm),var(--dk) 70%);}
+.glow{position:absolute;top:18%;left:50%;transform:translateX(-50%);width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(201,150,58,.13),transparent 70%);pointer-events:none;
+  animation:pg 4s ease-in-out infinite;}
+@keyframes pg{0%,100%{transform:translateX(-50%) scale(1);opacity:.6;}50%{transform:translateX(-50%) scale(1.15);opacity:1;}}
+.h-flame{font-size:3rem;margin-bottom:1rem;animation:flk 3s ease-in-out infinite alternate;}
+.h-title{font-family:'Fraunces',serif;font-size:clamp(2.3rem,7vw,4rem);font-weight:900;line-height:1;letter-spacing:-1.5px;margin-bottom:.4rem;
+  background:linear-gradient(135deg,var(--gl),var(--g),#A07020);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.h-fam{display:inline-flex;align-items:center;gap:.4rem;background:rgba(201,150,58,.07);border:1px solid rgba(201,150,58,.18);
+  border-radius:100px;padding:.3rem .8rem;font-size:.8rem;color:var(--g);font-style:italic;margin-bottom:1.75rem;}
+.h-cards{display:grid;grid-template-columns:1fr;gap:.9rem;width:100%;max-width:320px;}
+.h-card{background:linear-gradient(135deg,var(--dp),var(--dk));border-radius:16px;padding:1.4rem;
+  border:1.5px solid rgba(201,150,58,.18);cursor:pointer;text-align:left;transition:transform .2s,box-shadow .2s;position:relative;overflow:hidden;}
+.h-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,150,58,.35),transparent);}
+.h-card:hover{transform:translateY(-4px);box-shadow:0 10px 35px rgba(0,0,0,.4),0 0 0 1px rgba(201,150,58,.22);}
+.h-card:active{transform:scale(.97);}
+.hc-ico{font-size:2rem;display:block;margin-bottom:.6rem;}
+.hc-lbl{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--gl);display:block;margin-bottom:.25rem;}
+.hc-dsc{font-size:.8rem;color:var(--tg);font-style:italic;line-height:1.5;}
+.h-foot{margin-top:1.75rem;font-size:.72rem;color:var(--tg);font-style:italic;line-height:1.7;}
+.cpill{background:rgba(201,150,58,.07);border:1px dashed rgba(201,150,58,.22);border-radius:8px;padding:.3rem .65rem;
+  font-family:'Fraunces',serif;letter-spacing:2px;font-size:.78rem;color:var(--g);cursor:pointer;display:inline-block;margin:.3rem 0;transition:background .2s;}
+.cpill:hover{background:rgba(201,150,58,.14);}
+
+/* ═══════════════════════
+   GRABAR SCREEN
+═══════════════════════ */
+#sc-grab{background:radial-gradient(ellipse at 50% 60%,var(--dp),#0D0804 80%);}
+.grab-hdr{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.4rem;border-bottom:1px solid rgba(201,150,58,.13);}
+.slbl{font-size:.78rem;color:var(--tg);font-style:italic;}
+.vbox{background:rgba(201,150,58,.06);border:1px solid rgba(201,150,58,.16);border-radius:13px;padding:1rem 1.3rem;margin:1.2rem 1.4rem 0;display:flex;align-items:flex-start;gap:.7rem;}
+.vico{font-size:1.25rem;flex-shrink:0;margin-top:2px;}
+.vinn{flex:1;}
+.spk{display:inline-flex;align-items:center;gap:.3rem;background:none;border:1px solid rgba(201,150,58,.22);color:var(--g);border-radius:100px;padding:.3rem .75rem;font-family:'Lora',serif;font-size:.76rem;cursor:pointer;transition:all .2s;margin-bottom:.35rem;}
+.spk:hover{background:rgba(201,150,58,.09);}
+.spk.on{animation:pspk 1s ease-in-out infinite;}
+@keyframes pspk{0%,100%{opacity:.8;}50%{opacity:1;}}
+.vtxt{font-size:.9rem;color:var(--gl);line-height:1.6;font-style:italic;}
+.gbody{padding:1.4rem;flex:1;display:flex;flex-direction:column;gap:1.1rem;}
+.ssec{display:none;flex-direction:column;gap:1rem;}
+.ssec.on{display:flex;}
+.stitle{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:600;color:var(--gl);}
+.shint{font-size:.86rem;color:var(--tg);font-style:italic;line-height:1.55;}
+/* moments */
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;}
+.mbtn{background:rgba(201,150,58,.04);border:1.5px solid rgba(201,150,58,.16);border-radius:11px;padding:.85rem .75rem;color:var(--cr);font-family:'Lora',serif;font-size:.87rem;cursor:pointer;text-align:left;transition:all .2s;line-height:1.4;}
+.mbtn:hover,.mbtn.sel{background:rgba(201,150,58,.13);border-color:var(--g);color:var(--gl);}
+.me{font-size:1.25rem;display:block;margin-bottom:.28rem;}
+.ml{font-size:.78rem;font-style:italic;display:block;}
+/* record */
+.rarea{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.4rem;padding:.75rem 0;}
+.rring{width:190px;height:190px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;cursor:pointer;user-select:none;-webkit-user-select:none;transition:transform .15s;-webkit-tap-highlight-color:transparent;}
+.rring:active{transform:scale(.95);}
+.ro{position:absolute;inset:0;border-radius:50%;border:2px solid rgba(201,150,58,.22);animation:rs 8s linear infinite;}
+@keyframes rs{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.rm{position:absolute;inset:12px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#5C2020,#2C0A0A);border:2px solid rgba(139,32,32,.45);}
+.ri{position:absolute;inset:27px;border-radius:50%;background:radial-gradient(circle at 40% 35%,#8B2020,#5C1010);border:2px solid var(--sll);box-shadow:0 0 36px rgba(139,32,32,.45),inset 0 2px 0 rgba(255,150,150,.09);display:flex;align-items:center;justify-content:center;transition:all .2s;}
+.rring.rec .ri{background:radial-gradient(circle at 40% 35%,#C03030,#901010);box-shadow:0 0 55px rgba(192,48,48,.65),0 0 110px rgba(139,32,32,.28);animation:hb 1s ease-in-out infinite;}
+@keyframes hb{0%,100%{transform:scale(1);}50%{transform:scale(1.07);}}
+.rw{position:absolute;inset:-14px;border-radius:50%;border:2px solid rgba(139,32,32,.22);opacity:0;}
+.rec .rw{animation:rip 1.5s ease-out infinite;}
+.rw:nth-child(2){animation-delay:.5s;}.rw:nth-child(3){animation-delay:1s;}
+@keyframes rip{0%{transform:scale(1);opacity:.4;}100%{transform:scale(1.8);opacity:0;}}
+.rmic{font-size:2.3rem;position:relative;z-index:1;}
+.rtimer{font-family:'Fraunces',serif;font-size:2rem;font-weight:900;color:var(--sll);letter-spacing:2px;display:none;}
+.rtimer.on{display:block;}
+.rlbl{font-family:'Fraunces',serif;font-size:.95rem;color:var(--gl);text-align:center;line-height:1.5;}
+.rstat{font-size:.8rem;color:var(--tg);font-style:italic;text-align:center;}
+/* playback */
+.pba{background:rgba(201,150,58,.05);border:1.5px solid rgba(201,150,58,.16);border-radius:13px;padding:1rem;display:none;flex-direction:column;gap:.8rem;}
+.pba.on{display:flex;}
+.pbbar{height:4px;background:rgba(201,150,58,.14);border-radius:2px;overflow:hidden;}
+.pbfill{height:100%;background:var(--g);border-radius:2px;width:0%;transition:width .1s linear;}
+.pbctr{display:flex;gap:.7rem;align-items:center;}
+.playsm{background:var(--g);border:none;border-radius:50%;width:38px;height:38px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s;}
+.playsm:hover{background:var(--gl);}
+.pbdur{font-size:.8rem;color:var(--tg);}
+/* preview */
+.pcard{background:rgba(201,150,58,.05);border:1px solid rgba(201,150,58,.14);border-radius:13px;padding:1.1rem;}
+.plbl{font-size:.7rem;color:var(--g);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:.22rem;}
+.pval{font-size:.93rem;color:var(--cr);}
+.pval.it{font-style:italic;color:var(--tg);}
+.txta{background:rgba(201,150,58,.05);border:1.5px solid rgba(201,150,58,.16);border-radius:11px;padding:.9rem 1.1rem;color:var(--cr);font-family:'Lora',serif;font-size:.93rem;line-height:1.7;resize:none;outline:none;width:100%;min-height:100px;transition:border-color .2s;}
+.txta:focus{border-color:var(--g);}
+.txta::placeholder{color:var(--tg);font-style:italic;}
+/* upload */
+.upwrap{margin-top:.65rem;display:none;}
+.uptrack{background:rgba(201,150,58,.1);border-radius:100px;height:5px;overflow:hidden;}
+.upfill{height:100%;background:var(--g);border-radius:100px;width:0%;transition:width .28s ease;}
+.uplbl{font-size:.75rem;color:var(--tg);font-style:italic;margin-top:.35rem;}
+
+/* ═══════════════════════
+   GALLERY SCREEN
+═══════════════════════ */
+#sc-ver{background:#0D0804;}
+.ghdr{padding:1.4rem;text-align:center;border-bottom:1px solid rgba(201,150,58,.11);position:relative;}
+.gtitle{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;color:var(--gl);}
+.gsub{font-size:.8rem;color:var(--tg);font-style:italic;margin-top:.18rem;}
+.gbody2{padding:1.4rem;flex:1;}
+.glist{display:flex;flex-direction:column;gap:1rem;}
+.empty{text-align:center;padding:3.5rem 2rem;color:var(--tg);font-style:italic;line-height:1.9;}
+.empty .ei{font-size:2.5rem;display:block;margin-bottom:.85rem;opacity:.4;}
+.cc{background:linear-gradient(135deg,var(--dp),var(--dk));border:1px solid rgba(201,150,58,.16);border-radius:17px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s;position:relative;}
+.cc::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,150,58,.32),transparent);}
+.cc:hover{transform:translateY(-3px);box-shadow:0 10px 35px rgba(0,0,0,.45),0 0 0 1px rgba(201,150,58,.22);}
+.ccin{padding:1.25rem;}
+.cctop{display:flex;align-items:flex-start;justify-content:space-between;gap:.75rem;margin-bottom:.75rem;}
+.ccwho{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--cr);}
+.ccfrom{font-size:.76rem;color:var(--tg);font-style:italic;margin-top:.12rem;}
+.wax{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#C03030,#6B0F0F);display:flex;align-items:center;justify-content:center;font-size:1.15rem;flex-shrink:0;box-shadow:0 2px 12px rgba(139,32,32,.38),inset 0 1px 0 rgba(255,120,120,.1);position:relative;}
+.wax::after{content:'';position:absolute;inset:3px;border-radius:50%;border:1px solid rgba(255,255,255,.06);}
+.wax.op{background:radial-gradient(circle at 35% 30%,var(--gl),var(--g));box-shadow:0 2px 12px rgba(201,150,58,.32);}
+.ccmom{display:inline-flex;align-items:center;gap:.3rem;background:rgba(201,150,58,.06);border:1px solid rgba(201,150,58,.12);border-radius:100px;padding:.26rem .75rem;font-size:.74rem;color:var(--g);font-style:italic;margin-bottom:.75rem;}
+.ccprev{font-size:.86rem;color:var(--ts);line-height:1.6;font-style:italic;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.ccfoot{display:flex;align-items:center;justify-content:space-between;padding:.75rem 1.25rem;border-top:1px solid rgba(201,150,58,.08);}
+.ccdate{font-size:.73rem;color:var(--tg);font-style:italic;}
+.ccplay{font-size:.78rem;color:var(--g);}
+.rfab{position:fixed;bottom:1.4rem;right:1.4rem;z-index:50;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--g),#A07020);border:none;cursor:pointer;font-size:1.4rem;box-shadow:0 5px 25px rgba(201,150,58,.38);display:flex;align-items:center;justify-content:center;transition:transform .2s;}
+.rfab:hover{transform:scale(1.1);}
+.ldg{text-align:center;padding:3rem;color:var(--tg);font-style:italic;}
+.rbtn{background:none;border:1px solid rgba(201,150,58,.18);color:var(--g);border-radius:100px;padding:.38rem .85rem;font-family:'Lora',serif;font-size:.78rem;cursor:pointer;position:absolute;right:1.2rem;top:50%;transform:translateY(-50%);transition:all .2s;}
+.rbtn:hover{background:rgba(201,150,58,.08);}
+
+/* ═══════════════════════
+   CONFIRM SCREEN
+═══════════════════════ */
+#sc-conf{align-items:center;justify-content:center;text-align:center;padding:2rem;
+  background:radial-gradient(ellipse at 50% 50%,var(--dp),#0D0804);}
+.cico{font-size:3.8rem;margin-bottom:1.4rem;animation:fup .55s ease;}
+@keyframes fup{from{transform:translateY(18px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.ctitle{font-family:'Fraunces',serif;font-size:1.8rem;font-weight:600;color:var(--gl);margin-bottom:.6rem;line-height:1.2;}
+.cmsg{font-size:.93rem;color:var(--ts);line-height:1.9;font-style:italic;max-width:290px;margin:0 auto 1.8rem;}
+.ccard{background:rgba(201,150,58,.06);border:1px solid rgba(201,150,58,.16);border-radius:13px;padding:1.1rem;margin-bottom:1.6rem;text-align:left;max-width:310px;width:100%;}
+.clbl{font-size:.7rem;color:var(--g);text-transform:uppercase;letter-spacing:1px;margin-bottom:.25rem;}
+.cval{font-size:.97rem;color:var(--cr);}
+.cmom2{font-size:.82rem;color:var(--tg);font-style:italic;margin-top:.18rem;}
+
+/* ═══════════════════════
+   MODAL
+═══════════════════════ */
+.moverlay{display:none;position:fixed;inset:0;z-index:100;background:rgba(8,4,2,.93);align-items:center;justify-content:center;padding:1.5rem;}
+.moverlay.on{display:flex;}
+.mbox{background:linear-gradient(160deg,var(--dp),var(--dk));border:1px solid rgba(201,150,58,.2);border-radius:20px;width:100%;max-width:440px;position:relative;overflow:hidden;}
+.mbox::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,150,58,.4),transparent);}
+.mseal-area{text-align:center;padding:2rem 1.75rem 1.1rem;}
+.mseal-big{width:76px;height:76px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#C03030,#6B0F0F);display:inline-flex;align-items:center;justify-content:center;font-size:1.9rem;margin-bottom:1rem;box-shadow:0 5px 24px rgba(139,32,32,.45);animation:sa .45s ease;}
+@keyframes sa{from{transform:scale(.5) rotate(-10deg);opacity:0;}to{transform:scale(1) rotate(0);opacity:1;}}
+.mfrom{font-family:'Fraunces',serif;font-size:.78rem;color:var(--g);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:.35rem;}
+.mtitle{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:600;color:var(--cr);line-height:1.2;margin-bottom:.3rem;}
+.mmom{font-size:.82rem;color:var(--tg);font-style:italic;}
+.mcont{padding:0 1.75rem 1.1rem;}
+.mmsg{font-size:.95rem;color:var(--pc);line-height:1.85;font-style:italic;background:rgba(201,150,58,.04);border-radius:11px;padding:1rem;margin-bottom:1rem;border-left:2px solid rgba(201,150,58,.25);}
+.apl{background:rgba(0,0,0,.3);border-radius:12px;padding:1rem;}
+.ap-ttl{font-size:.7rem;color:var(--tg);text-transform:uppercase;letter-spacing:1px;margin-bottom:.6rem;}
+.apwf{height:40px;display:flex;align-items:center;gap:2px;margin-bottom:.7rem;}
+.apbar{flex:1;border-radius:2px;background:rgba(201,150,58,.16);transition:background .1s;}
+.apbar.on{background:var(--g);}
+.apctr{display:flex;align-items:center;gap:.8rem;}
+.applay{width:44px;height:44px;border-radius:50%;background:var(--g);border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .2s,transform .15s;}
+.applay:hover{background:var(--gl);transform:scale(1.05);}
+.appw{flex:1;}
+.aptrack{height:4px;background:rgba(201,150,58,.13);border-radius:2px;cursor:pointer;margin-bottom:.32rem;}
+.apfill{height:100%;background:linear-gradient(90deg,var(--g),var(--gl));border-radius:2px;width:0%;transition:width .1s linear;}
+.aptime{font-size:.7rem;color:var(--tg);}
+.mact{display:flex;gap:.6rem;padding:0 1.75rem 1.6rem;}
+.mcls{background:none;border:1px solid rgba(201,150,58,.16);color:var(--tg);border-radius:100px;padding:.55rem 1.1rem;font-family:'Lora',serif;font-size:.83rem;cursor:pointer;transition:all .2s;flex:1;}
+.mcls:hover{border-color:var(--g);color:var(--g);}
+
+@media(min-width:500px){.mgrid{grid-template-columns:repeat(3,1fr);}.h-cards{grid-template-columns:1fr 1fr;max-width:480px;}}
+</style>
+</head>
+<body>
+<div class="toast" id="toast"></div>
+
+<!-- ═══ FAMILIA ═══ -->
+<div class="sc on" id="sc-fam">
+  <div class="fam-box">
+    <div class="fam-flame">🕯️</div>
+    <h1 class="fam-title">Cápsulas<br/>de Vida</h1>
+    <p class="fam-sub">El legado de quienes amamos, guardado para siempre en la nube</p>
+    <div class="tabs">
+      <button class="tab on" onclick="swTab('crear')">Crear familia</button>
+      <button class="tab" onclick="swTab('unirse')">Tengo un código</button>
+    </div>
+    <div class="tpanel on" id="tp-crear">
+      <input class="inp" type="text" id="fn" placeholder="Nombre: ej. Familia García" autocomplete="off"/>
+      <button class="btn-gold" onclick="crearFam()">Crear mi familia →</button>
+      <p style="font-size:.76rem;color:var(--tg);font-style:italic;line-height:1.6;">Recibirás un código único para compartir con tu familia.</p>
+    </div>
+    <div class="tpanel" id="tp-unirse" style="display:none;">
+      <input class="inp code-inp" type="text" id="fc" placeholder="XXXX-XXXX" maxlength="9" autocomplete="off" oninput="fmtCode(this)"/>
+      <button class="btn-gold" onclick="unirse()">Entrar a mi familia →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ HOME ═══ -->
+<div class="sc" id="sc-home">
+  <div class="glow"></div>
+  <div class="h-flame">🕯️</div>
+  <h1 class="h-title">Cápsulas<br/>de Vida</h1>
+  <div class="h-fam">👨‍👩‍👧 Familia <span id="hfn">—</span></div>
+  <div class="h-cards">
+    <div class="h-card" onclick="ir('grab')">
+      <span class="hc-ico">🎙️</span>
+      <span class="hc-lbl">Grabar cápsula</span>
+      <span class="hc-dsc">Deja tu voz y amor para siempre</span>
+    </div>
+    <div class="h-card" onclick="ir('ver')">
+      <span class="hc-ico">💛</span>
+      <span class="hc-lbl">Ver cápsulas</span>
+      <span class="hc-dsc">El legado de tu familia</span>
+    </div>
+  </div>
+  <div class="h-foot">
+    Código familiar:<br/>
+    <span class="cpill" id="hcode" onclick="cpyCod()" title="Toca para copiar">—</span><br/>
+    <span style="font-size:.68rem;opacity:.55;">Compártelo con tu familia</span>
+  </div>
+</div>
+
+<!-- ═══ GRABAR ═══ -->
+<div class="sc" id="sc-grab">
+  <div class="grab-hdr">
+    <button class="back" onclick="ir('home')">← Volver</button>
+    <span class="slbl" id="slbl">Paso 1 de 4</span>
+  </div>
+  <div class="vbox">
+    <span class="vico">🔊</span>
+    <div class="vinn">
+      <button class="spk" id="spkbtn" onclick="habla()">▶ Escuchar instrucción</button>
+      <div class="vtxt" id="vtxt">Vamos a crear juntos una cápsula de vida. Yo te guío con amor en cada paso.</div>
+    </div>
+  </div>
+  <div class="gbody">
+    <!-- STEP 1 -->
+    <div class="ssec on" id="ss1">
+      <h2 class="stitle">¿Cómo te llamas?</h2>
+      <p class="shint">Así sabrán siempre de quién viene este mensaje.</p>
+      <input class="inp" type="text" id="inombre" placeholder="Tu nombre, ej: Mamá Rosa" autocomplete="off" oninput="ck1()"/>
+      <p class="shint" style="font-size:.76rem;">Si no puedes escribir, pide que alguien te ayude solo con el nombre.</p>
+      <button class="btn-gold" id="b1" onclick="paso(2)" disabled>Siguiente →</button>
+    </div>
+    <!-- STEP 2 -->
+    <div class="ssec" id="ss2">
+      <h2 class="stitle">¿Para quién y cuándo?</h2>
+      <p class="shint">Elige el destinatario y el momento especial.</p>
+      <input class="inp" type="text" id="ipara" placeholder="Para quién: ej. Mi hijo Carlos" autocomplete="off" oninput="ck2()"/>
+      <div class="mgrid">
+        <button class="mbtn" onclick="selM(this,'💍 Cuando te cases')"><span class="me">💍</span><span class="ml">Cuando te cases</span></button>
+        <button class="mbtn" onclick="selM(this,'👶 Cuando tengas un hijo')"><span class="me">👶</span><span class="ml">Cuando tengas un hijo</span></button>
+        <button class="mbtn" onclick="selM(this,'🎓 Cuando te gradúes')"><span class="me">🎓</span><span class="ml">Cuando te gradúes</span></button>
+        <button class="mbtn" onclick="selM(this,'💔 Cuando estés triste')"><span class="me">💔</span><span class="ml">Cuando estés triste</span></button>
+        <button class="mbtn" onclick="selM(this,'🌟 Cuando logres algo grande')"><span class="me">🌟</span><span class="ml">Cuando logres algo</span></button>
+        <button class="mbtn" onclick="selM(this,'❤️ Cuando más me necesites')"><span class="me">❤️</span><span class="ml">Cuando me necesites</span></button>
+      </div>
+      <input class="inp" type="text" id="icustom" placeholder="O escribe tu propio momento…" oninput="ck2()" style="margin-top:.2rem;"/>
+      <div style="display:flex;gap:.6rem;">
+        <button class="btn-ghost" onclick="paso(1)">← Atrás</button>
+        <button class="btn-gold" id="b2" onclick="paso(3)" disabled style="flex:2;">Siguiente →</button>
+      </div>
+    </div>
+    <!-- STEP 3 -->
+    <div class="ssec" id="ss3">
+      <h2 class="stitle">Tu mensaje de voz</h2>
+      <p class="shint">Presiona el círculo rojo y habla con el corazón. Suéltalo cuando termines.</p>
+      <div class="rarea">
+        <div class="rring" id="rring"
+          onmousedown="startR()" onmouseup="stopR()"
+          ontouchstart="startR(event)" ontouchend="stopR(event)">
+          <div class="ro"></div>
+          <div class="rw"></div><div class="rw"></div><div class="rw"></div>
+          <div class="rm"></div>
+          <div class="ri"><span class="rmic" id="rmic">🎙️</span></div>
+        </div>
+        <div class="rtimer" id="rtimer">0:00</div>
+        <p class="rlbl" id="rlbl">Mantén presionado · Suelta al terminar</p>
+        <p class="rstat" id="rstat"></p>
+      </div>
+      <div class="pba" id="pba">
+        <p style="font-size:.78rem;color:var(--g);font-weight:600;">✅ Grabación lista</p>
+        <div class="pbbar"><div class="pbfill" id="pbfill"></div></div>
+        <div class="pbctr">
+          <button class="playsm" id="pbplay" onclick="playPb()">▶</button>
+          <span class="pbdur" id="pbdur">0:00</span>
+          <button class="btn-ghost" style="flex:1;padding:.42rem;" onclick="rstRec()">Grabar de nuevo</button>
+        </div>
+      </div>
+      <div class="gdiv"></div>
+      <textarea class="txta" id="imsg" rows="3" placeholder="También puedes escribir unas palabras (opcional)…"></textarea>
+      <div style="display:flex;flex-direction:column;gap:.35rem;">
+        <label style="font-size:.78rem;color:var(--tg);font-style:italic;">📧 Email para notificar a la familia (opcional):</label>
+        <input class="inp" type="email" id="inotify" placeholder="familiar@email.com" style="font-size:.88rem;padding:.75rem 1rem;"/>
+      </div>
+      <div style="display:flex;gap:.6rem;">
+        <button class="btn-ghost" onclick="paso(2)">← Atrás</button>
+        <button class="btn-gold" id="b3" onclick="paso(4)" disabled style="flex:2;">Revisar →</button>
+      </div>
+    </div>
+    <!-- STEP 4 -->
+    <div class="ssec" id="ss4">
+      <h2 class="stitle">Último vistazo 💛</h2>
+      <div class="pcard">
+        <div style="margin-bottom:.65rem;"><span class="plbl">De</span><span class="pval" id="pvn">—</span></div>
+        <div class="gdiv" style="margin:.5rem 0;"></div>
+        <div style="margin-bottom:.65rem;"><span class="plbl">Para</span><span class="pval" id="pvp">—</span><span class="pval it" id="pvm">—</span></div>
+        <div class="gdiv" style="margin:.5rem 0;"></div>
+        <div style="margin-bottom:.65rem;"><span class="plbl">Mensaje</span><span class="pval it" id="pvmsg">Solo voz</span></div>
+        <div class="gdiv" style="margin:.5rem 0;"></div>
+        <div><span class="plbl">Voz</span><span class="pval" id="pvaud">—</span></div>
+        <div class="upwrap" id="upwrap">
+          <div class="uptrack"><div class="upfill" id="upfill"></div></div>
+          <div class="uplbl" id="uplbl">Preparando…</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:.6rem;margin-top:.65rem;">
+        <button class="btn-ghost" onclick="paso(3)">← Atrás</button>
+        <button class="btn-gold" id="bsellar" onclick="sellar()" style="flex:2;">🕯️ Sellar para siempre</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VER ═══ -->
+<div class="sc" id="sc-ver">
+  <div class="ghdr">
+    <button class="back" style="position:absolute;left:1.2rem;top:50%;transform:translateY(-50%);" onclick="ir('home')">← Volver</button>
+    <div class="gtitle">Nuestras Cápsulas</div>
+    <div class="gsub" id="gfn">—</div>
+    <button class="rbtn" onclick="loadCaps()">↺</button>
+  </div>
+  <div class="gbody2" id="gbody">
+    <div class="ldg">Cargando cápsulas… 🕯️</div>
+  </div>
+  <button class="rfab" onclick="ir('grab')" title="Nueva cápsula">+</button>
+</div>
+
+<!-- ═══ CONFIRM ═══ -->
+<div class="sc" id="sc-conf">
+  <span class="cico">🕯️</span>
+  <h2 class="ctitle">Cápsula sellada<br/>con amor</h2>
+  <p class="cmsg">Tu voz y tu amor están guardados en la nube para siempre. Esta cápsula vivirá más allá del tiempo.</p>
+  <div class="ccard">
+    <div class="clbl">Guardada</div>
+    <div class="cval" id="cval">—</div>
+    <div class="cmom2" id="cmom">—</div>
+  </div>
+  <button class="btn-gold" style="max-width:290px;width:100%;" onclick="ir('ver')">Ver todas las cápsulas →</button>
+  <button class="btn-ghost" style="max-width:290px;width:100%;margin-top:.6rem;" onclick="ir('grab')">Grabar otra cápsula</button>
+</div>
+
+<!-- ═══ MODAL ═══ -->
+<div class="moverlay" id="modal" onclick="closeMod(event)">
+  <div class="mbox" onclick="event.stopPropagation()">
+    <div class="mseal-area">
+      <div class="mseal-big" id="mseal">💛</div>
+      <div class="mfrom" id="mfrom">DE</div>
+      <div class="mtitle" id="mtitle">—</div>
+      <div class="mmom" id="mmom">—</div>
+    </div>
+    <div class="mcont">
+      <div class="mmsg" id="mmsg" style="display:none;"></div>
+      <div class="apl" id="mapl" style="display:none;">
+        <div class="ap-ttl">🎙️ Mensaje de voz</div>
+        <div class="apwf" id="apwf"></div>
+        <div class="apctr">
+          <button class="applay" id="apbtn" onclick="togAud()">▶</button>
+          <div class="appw">
+            <div class="aptrack" onclick="seekAud(event)"><div class="apfill" id="apfill"></div></div>
+            <div class="aptime" id="aptime">0:00 / 0:00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="mact">
+      <button class="mcls" onclick="closeMod()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ══ CONFIG ══ */
+// Change this to your production server URL when deploying
+const API = (window.location.hostname==='localhost'||window.location.hostname==='127.0.0.1') ? '' : 'https://api.abuelitoscontentos.com';
+
+/* ══ STATE ══ */
+let FC='', FN='', step=1, mom='', mr=null, chunks=[], blob=null, aurl=null, pb=null, secs=0, tint=null, maud=null, caps=[];
+
+/* ══ BOOT ══ */
+addEventListener('DOMContentLoaded',()=>{
+  FC=localStorage.getItem('fc')||'';
+  FN=localStorage.getItem('fn')||'';
+  if(FC&&FN){setFam(FC,FN);show('home');}
+  if(window.speechSynthesis) speechSynthesis.getVoices();
+});
+
+/* ══ SCREEN ══ */
+function show(id){document.querySelectorAll('.sc').forEach(s=>s.classList.remove('on'));document.getElementById('sc-'+id).classList.add('on');scrollTo(0,0);}
+function ir(d){
+  if(d==='grab'){rstAll();setStep(1);show('grab');return;}
+  if(d==='ver'){show('ver');loadCaps();return;}
+  show(d);
+}
+
+/* ══ TABS ══ */
+function swTab(t){
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='crear')||(i===1&&t==='unirse')));
+  document.getElementById('tp-crear').style.display=t==='crear'?'flex':'none';
+  document.getElementById('tp-unirse').style.display=t==='unirse'?'flex':'none';
+}
+
+/* ══ FAMILIA ══ */
+async function crearFam(){
+  const name=document.getElementById('fn').value.trim();
+  if(name.length<2){toast('Escribe el nombre de tu familia',1);return;}
+  try{
+    const r=await fetch(`${API}/api/familias`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name})});
+    const d=await r.json();
+    if(!d.ok)throw 0;
+    setFam(d.code,d.name);
+    toast(`✅ Código: ${d.code} — ¡Guárdalo y compártelo!`);
+    setTimeout(()=>show('home'),1400);
+  }catch{toast('Error creando la familia. Intenta de nuevo.',1);}
+}
+async function unirse(){
+  const code=document.getElementById('fc').value.trim().toUpperCase();
+  if(code.length<9){toast('Código incompleto',1);return;}
+  try{
+    const r=await fetch(`${API}/api/familias/${code}`);
+    const d=await r.json();
+    if(!d.ok)throw 0;
+    setFam(d.code,d.name);
+    toast(`Bienvenido/a, familia ${d.name} 💛`);
+    setTimeout(()=>show('home'),1200);
+  }catch{toast('Código no encontrado. Revísalo.',1);}
+}
+function setFam(code,name){
+  FC=code;FN=name;
+  localStorage.setItem('fc',code);localStorage.setItem('fn',name);
+  document.getElementById('hfn').textContent=name;
+  document.getElementById('hcode').textContent=code;
+  document.getElementById('gfn').textContent=`Familia ${name}`;
+}
+function fmtCode(el){let v=el.value.toUpperCase().replace(/[^A-Z0-9]/g,'');if(v.length>4)v=v.slice(0,4)+'-'+v.slice(4,8);el.value=v;}
+function cpyCod(){navigator.clipboard?.writeText(FC).then(()=>toast('Código copiado 💛')).catch(()=>toast(FC));}
+
+/* ══ STEPS ══ */
+const G={1:"Hola. Vamos a grabar un mensaje que durará para siempre. Primero, dime tu nombre.",2:"Muy bien. ¿Para quién es este mensaje y en qué momento especial quieres que lo abran?",3:"Ahora lo más importante. Presiona el círculo rojo y habla con el corazón. Suéltalo cuando termines.",4:"Casi listo. Revisa tu cápsula y cuando estés lista, séllala para siempre."};
+function setStep(n){step=n;document.querySelectorAll('.ssec').forEach(s=>s.classList.remove('on'));document.getElementById('ss'+n).classList.add('on');document.getElementById('slbl').textContent=`Paso ${n} de 4`;document.getElementById('vtxt').textContent=G[n];if(n===4)fillPrev();scrollTo(0,0);}
+function paso(n){setStep(n);}
+
+/* ══ TTS ══ */
+function habla(){
+  if(!window.speechSynthesis)return;
+  const btn=document.getElementById('spkbtn');
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(document.getElementById('vtxt').textContent);
+  u.lang='es-ES';u.rate=.87;u.pitch=1;
+  const vs=speechSynthesis.getVoices();
+  const v=vs.find(x=>x.lang.startsWith('es')&&x.name.toLowerCase().includes('female'))||vs.find(x=>x.lang.startsWith('es'));
+  if(v)u.voice=v;
+  btn.classList.add('on');btn.textContent='🔊 Hablando…';
+  u.onend=()=>{btn.classList.remove('on');btn.textContent='▶ Escuchar instrucción';};
+  speechSynthesis.speak(u);
+}
+
+/* ══ VALIDATE ══ */
+function ck1(){document.getElementById('b1').disabled=document.getElementById('inombre').value.trim().length<2;}
+function ck2(){const p=document.getElementById('ipara').value.trim();const m=mom||document.getElementById('icustom').value.trim();document.getElementById('b2').disabled=!(p.length>=2&&m);}
+function selM(btn,val){document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');mom=val;document.getElementById('icustom').value='';ck2();}
+
+/* ══ RECORD ══ */
+async function startR(e){
+  if(e)e.preventDefault();
+  if(mr&&mr.state==='recording')return;
+  try{
+    const s=await navigator.mediaDevices.getUserMedia({audio:true});
+    chunks=[];mr=new MediaRecorder(s);
+    mr.ondataavailable=e=>chunks.push(e.data);
+    mr.onstop=()=>{blob=new Blob(chunks,{type:'audio/webm'});aurl=URL.createObjectURL(blob);showPb();s.getTracks().forEach(t=>t.stop());};
+    mr.start();secs=0;
+    tint=setInterval(()=>{secs++;const m=Math.floor(secs/60),s=secs%60;document.getElementById('rtimer').textContent=`${m}:${s.toString().padStart(2,'0')}`;},1000);
+    document.getElementById('rring').classList.add('rec');
+    document.getElementById('rtimer').classList.add('on');
+    document.getElementById('rlbl').textContent='Grabando… habla con el corazón 💛';
+    document.getElementById('rmic').textContent='⏹️';
+    document.getElementById('rstat').textContent='Suelta el botón cuando termines';
+    document.getElementById('b3').disabled=true;
+  }catch{document.getElementById('rstat').textContent='No se pudo acceder al micrófono. Comprueba los permisos.';}
+}
+function stopR(e){
+  if(e)e.preventDefault();
+  if(!mr||mr.state!=='recording')return;
+  mr.stop();clearInterval(tint);
+  document.getElementById('rring').classList.remove('rec');
+  document.getElementById('rtimer').classList.remove('on');
+  document.getElementById('rlbl').textContent='¡Grabación lista! 💛';
+  document.getElementById('rmic').textContent='🎙️';
+  document.getElementById('rstat').textContent='';
+}
+function showPb(){
+  document.getElementById('pba').classList.add('on');
+  const m=Math.floor(secs/60),s=secs%60;
+  document.getElementById('pbdur').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById('b3').disabled=false;
+}
+function playPb(){
+  if(!aurl)return;
+  if(pb){pb.pause();pb=null;document.getElementById('pbplay').textContent='▶';return;}
+  pb=new Audio(aurl);
+  pb.ontimeupdate=()=>{const p=(pb.currentTime/pb.duration)*100;document.getElementById('pbfill').style.width=p+'%';};
+  pb.onended=()=>{pb=null;document.getElementById('pbplay').textContent='▶';document.getElementById('pbfill').style.width='0%';};
+  pb.play();document.getElementById('pbplay').textContent='⏸';
+}
+function rstRec(){
+  if(pb){pb.pause();pb=null;}
+  blob=null;aurl=null;secs=0;
+  document.getElementById('pba').classList.remove('on');
+  document.getElementById('rtimer').textContent='0:00';
+  document.getElementById('rlbl').textContent='Mantén presionado · Suelta al terminar';
+  document.getElementById('b3').disabled=true;
+}
+
+/* ══ PREVIEW ══ */
+function fillPrev(){
+  const n=document.getElementById('inombre').value.trim();
+  const p=document.getElementById('ipara').value.trim();
+  const m=mom||document.getElementById('icustom').value.trim();
+  const msg=document.getElementById('imsg').value.trim();
+  document.getElementById('pvn').textContent=n;
+  document.getElementById('pvp').textContent=p;
+  document.getElementById('pvm').textContent=m;
+  document.getElementById('pvmsg').textContent=msg||'(Solo voz)';
+  document.getElementById('pvaud').textContent=aurl?`✅ ${Math.floor(secs/60)}:${(secs%60).toString().padStart(2,'0')} grabado`:'❌ Sin grabación de voz';
+}
+
+/* ══ SAVE ══ */
+async function sellar(){
+  if(!FC){toast('Configura tu familia primero',1);return;}
+  const nombre=document.getElementById('inombre').value.trim();
+  const para=document.getElementById('ipara').value.trim();
+  const momento=mom||document.getElementById('icustom').value.trim();
+  const msg=document.getElementById('imsg').value.trim();
+  const notify=document.getElementById('inotify').value.trim();
+  if(!nombre||!para||!momento){toast('Completa todos los campos',1);return;}
+  const btn=document.getElementById('bsellar');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>Guardando…';
+  const uw=document.getElementById('upwrap');
+  const uf=document.getElementById('upfill');
+  const ul=document.getElementById('uplbl');
+  uw.style.display='block';ul.textContent='Preparando cápsula…';
+  let fake=0;
+  const fi=setInterval(()=>{fake=Math.min(fake+Math.random()*11,82);uf.style.width=fake+'%';ul.textContent=fake<40?'Subiendo grabación…':'Guardando en la nube…';},220);
+  try{
+    const fd=new FormData();
+    fd.append('family_code',FC);fd.append('nombre',nombre);fd.append('para',para);fd.append('momento',momento);fd.append('msg',msg);fd.append('duracion_seg',secs);
+    if(notify)fd.append('notify_email',notify);
+    if(blob)fd.append('audio',blob,'capsula.webm');
+    const r=await fetch(`${API}/api/capsulas`,{method:'POST',body:fd});
+    clearInterval(fi);uf.style.width='100%';ul.textContent='¡Guardada! 💛';
+    const d=await r.json();
+    if(!d.ok)throw new Error(d.error);
+    document.getElementById('cval').textContent=`De ${nombre} · Para ${para}`;
+    document.getElementById('cmom').textContent=momento;
+    setTimeout(()=>show('conf'),650);
+  }catch(err){
+    clearInterval(fi);uw.style.display='none';
+    btn.disabled=false;btn.textContent='🕯️ Sellar para siempre';
+    toast('Error al guardar. Comprueba la conexión.',1);
+    console.error(err);
+  }
+}
+
+function rstAll(){
+  step=1;mom='';blob=null;aurl=null;secs=0;
+  if(pb){pb.pause();pb=null;}
+  ['inombre','ipara','icustom','imsg','inotify'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.querySelectorAll('.mbtn').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('pba').classList.remove('on');
+  document.getElementById('rtimer').textContent='0:00';
+  document.getElementById('rlbl').textContent='Mantén presionado · Suelta al terminar';
+  document.getElementById('b1').disabled=true;
+  document.getElementById('b2').disabled=true;
+  document.getElementById('b3').disabled=true;
+  document.getElementById('upwrap').style.display='none';
+  document.getElementById('bsellar').disabled=false;
+  document.getElementById('bsellar').textContent='🕯️ Sellar para siempre';
+}
+
+/* ══ GALLERY ══ */
+async function loadCaps(){
+  if(!FC)return;
+  document.getElementById('gbody').innerHTML='<div class="ldg">Cargando cápsulas… 🕯️</div>';
+  try{
+    const r=await fetch(`${API}/api/capsulas?family_code=${FC}`);
+    const d=await r.json();
+    if(!d.ok)throw 0;
+    caps=d.capsulas;
+    renderCaps();
+  }catch{document.getElementById('gbody').innerHTML='<div class="empty"><span class="ei">📡</span>No se pudieron cargar.<br/>Comprueba la conexión.</div>';}
+}
+function renderCaps(){
+  const b=document.getElementById('gbody');
+  if(!caps.length){b.innerHTML='<div class="empty"><span class="ei">🕯️</span>Aquí aparecerán las cápsulas<br/>de tu familia.<br/><br/><em>La primera puede ser tuya.</em></div>';return;}
+  b.innerHTML='<div class="glist">'+caps.map(capCard).join('')+'</div>';
+}
+function capCard(c){
+  const em=mEmo(c.momento);
+  const dt=new Date(c.created_at).toLocaleDateString('es',{day:'2-digit',month:'short',year:'numeric'});
+  return`<div class="cc" onclick="openCap(${c.id})">
+    <div class="ccin">
+      <div class="cctop">
+        <div><div class="ccwho">Para ${c.para}</div><div class="ccfrom">De ${c.nombre}</div></div>
+        <div class="wax${c.opened?' op':''}">${em}</div>
+      </div>
+      <div class="ccmom">${c.momento}</div>
+      ${c.msg?`<div class="ccprev">${c.msg}</div>`:''}
+    </div>
+    <div class="ccfoot">
+      <span class="ccdate">📅 ${dt}</span>
+      <span class="ccplay">${c.audio_url?'🎙️ Voz':'✍️ Texto'} ›</span>
+    </div>
+  </div>`;
+}
+function mEmo(m){if(!m)return'💛';if(m.includes('cases'))return'💍';if(m.includes('hijo'))return'👶';if(m.includes('gradu'))return'🎓';if(m.includes('triste'))return'💔';if(m.includes('grande'))return'🌟';return'❤️';}
+
+/* ══ MODAL ══ */
+async function openCap(id){
+  const c=caps.find(x=>x.id===id);if(!c)return;
+  fetch(`${API}/api/capsulas/${id}/open`,{method:'PATCH'}).catch(()=>{});
+  c.opened=true;
+  document.getElementById('mfrom').textContent=`De ${c.nombre}`;
+  document.getElementById('mtitle').textContent=`Para ${c.para}`;
+  document.getElementById('mmom').textContent=c.momento;
+  document.getElementById('mseal').textContent=mEmo(c.momento);
+  const me=document.getElementById('mmsg');
+  if(c.msg){me.textContent=c.msg;me.style.display='block';}else{me.style.display='none';}
+  const ae=document.getElementById('mapl');
+  if(c.audio_url){
+    ae.style.display='block';
+    if(maud)maud.pause();
+    maud=new Audio(c.audio_url);
+    maud.ontimeupdate=updMod;
+    maud.onended=()=>{document.getElementById('apbtn').textContent='▶';};
+    bldWave();
+  }else{ae.style.display='none';maud=null;}
+  document.getElementById('modal').classList.add('on');
+  renderCaps();
+}
+function bldWave(){
+  const wf=document.getElementById('apwf');wf.innerHTML='';
+  Array.from({length:36},()=>18+Math.random()*82).forEach(h=>{const b=document.createElement('div');b.className='apbar';b.style.height=h+'%';wf.appendChild(b);});
+}
+function updMod(){
+  if(!maud||isNaN(maud.duration))return;
+  const p=maud.currentTime/maud.duration;
+  document.getElementById('apfill').style.width=(p*100)+'%';
+  document.querySelectorAll('#apwf .apbar').forEach((b,i,a)=>b.classList.toggle('on',i<Math.floor(p*a.length)));
+  document.getElementById('aptime').textContent=`${ft(maud.currentTime)} / ${ft(maud.duration)}`;
+}
+function ft(s){return`${Math.floor(s/60)}:${Math.floor(s%60).toString().padStart(2,'0')}`;}
+function togAud(){if(!maud)return;if(maud.paused){maud.play();document.getElementById('apbtn').textContent='⏸';}else{maud.pause();document.getElementById('apbtn').textContent='▶';}}
+function seekAud(e){if(!maud||isNaN(maud.duration))return;const r=e.currentTarget.getBoundingClientRect();maud.currentTime=((e.clientX-r.left)/r.width)*maud.duration;}
+function closeMod(e){if(e&&e.target!==document.getElementById('modal'))return;if(maud)maud.pause();document.getElementById('modal').classList.remove('on');document.getElementById('apbtn').textContent='▶';document.getElementById('apfill').style.width='0%';}
+
+/* ══ TOAST ══ */
+let tt;
+function toast(m,err=0){const el=document.getElementById('toast');el.textContent=m;el.classList.toggle('err',!!err);el.classList.add('on');clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('on'),3200);}
+</script>
+</body>
+</html>
