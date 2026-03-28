@@ -7,411 +7,7 @@
   <meta name="description" content="La primera app diseñada con amor para que los abuelos del mundo estén más felices, conectados y activos. Únete a la lista de espera." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
-
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --sun:   #F5A623;
-      --coral: #F07A5A;
-      --rose:  #E8567A;
-      --cream: #FFF8F0;
-      --warm:  #FFF1E0;
-      --bark:  #3D1C0B;
-      --leaf:  #4A7C59;
-      --sky:   #5B9EC9;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Nunito', sans-serif;
-      background: var(--cream);
-      color: var(--bark);
-      overflow-x: hidden;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 1rem 2.5rem;
-      background: rgba(255,248,240,0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1.5px solid rgba(245,166,35,0.2);
-    }
-    .logo {
-      font-family: 'Fraunces', serif;
-      font-size: 1.35rem;
-      font-weight: 900;
-      color: var(--coral);
-      letter-spacing: -0.5px;
-    }
-    .logo span { color: var(--sun); }
-    nav a {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--bark);
-      text-decoration: none;
-      background: var(--sun);
-      padding: 0.5rem 1.25rem;
-      border-radius: 100px;
-      transition: background 0.2s, transform 0.15s;
-    }
-    nav a:hover { background: var(--coral); color: #fff; transform: scale(1.04); }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 7rem 1.5rem 4rem;
-      position: relative;
-      overflow: hidden;
-    }
-
-    /* Decorative blobs */
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.35;
-      pointer-events: none;
-    }
-    .blob-1 { width: 420px; height: 420px; background: var(--sun);    top: -80px;  left: -100px; animation: drift 8s ease-in-out infinite alternate; }
-    .blob-2 { width: 340px; height: 340px; background: var(--coral);  bottom: 0;   right: -80px; animation: drift 10s ease-in-out infinite alternate-reverse; }
-    .blob-3 { width: 260px; height: 260px; background: var(--rose);   top: 40%;    left: 60%;    animation: drift 12s ease-in-out infinite alternate; }
-
-    @keyframes drift {
-      from { transform: translate(0,0) scale(1); }
-      to   { transform: translate(30px, 20px) scale(1.08); }
-    }
-
-    /* Floating icons */
-    .floaters { position: absolute; inset: 0; pointer-events: none; }
-    .floaters span {
-      position: absolute;
-      font-size: 1.8rem;
-      animation: float linear infinite;
-      opacity: 0;
-    }
-    @keyframes float {
-      0%   { transform: translateY(0)   rotate(0deg); opacity: 0; }
-      10%  { opacity: 0.6; }
-      90%  { opacity: 0.5; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(245,166,35,0.18);
-      border: 1.5px solid var(--sun);
-      color: #8a5200;
-      font-size: 0.8rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      padding: 0.35rem 1rem;
-      border-radius: 100px;
-      margin-bottom: 1.75rem;
-      animation: fadeUp 0.7s ease both;
-    }
-
-    h1 {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -2px;
-      margin-bottom: 1.5rem;
-      animation: fadeUp 0.8s 0.1s ease both;
-    }
-    h1 em {
-      font-style: italic;
-      color: var(--coral);
-    }
-    h1 .underlined {
-      position: relative;
-      display: inline-block;
-      color: var(--sun);
-    }
-    h1 .underlined::after {
-      content: '';
-      position: absolute;
-      bottom: 4px; left: 0; right: 0;
-      height: 6px;
-      background: var(--rose);
-      border-radius: 3px;
-      transform: skewX(-3deg);
-    }
-
-    .hero-sub {
-      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
-      font-weight: 600;
-      color: #6b3a22;
-      max-width: 580px;
-      line-height: 1.6;
-      margin-bottom: 2.5rem;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-
-    /* ── FORM ── */
-    .waitlist-form {
-      display: flex;
-      gap: 0;
-      max-width: 480px;
-      width: 100%;
-      border-radius: 100px;
-      overflow: hidden;
-      box-shadow: 0 8px 40px rgba(240,122,90,0.25);
-      animation: fadeUp 0.8s 0.3s ease both;
-      border: 2px solid var(--coral);
-    }
-    .waitlist-form input {
-      flex: 1;
-      border: none;
-      outline: none;
-      padding: 1rem 1.5rem;
-      font-family: 'Nunito', sans-serif;
-      font-size: 1rem;
-      font-weight: 600;
-      background: #fff;
-      color: var(--bark);
-    }
-    .waitlist-form input::placeholder { color: #bba090; font-weight: 600; }
-    .waitlist-form button {
-      background: var(--coral);
-      color: #fff;
-      border: none;
-      padding: 1rem 1.75rem;
-      font-family: 'Nunito', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 800;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.15s;
-      white-space: nowrap;
-    }
-    .waitlist-form button:hover { background: var(--rose); }
-    .waitlist-form button:active { transform: scale(0.97); }
-
-    .success-msg {
-      display: none;
-      align-items: center;
-      gap: 0.6rem;
-      background: rgba(74,124,89,0.12);
-      border: 1.5px solid var(--leaf);
-      color: var(--leaf);
-      font-weight: 700;
-      padding: 0.85rem 1.5rem;
-      border-radius: 100px;
-      font-size: 0.95rem;
-      animation: pop 0.4s ease;
-    }
-    @keyframes pop {
-      0% { transform: scale(0.85); opacity: 0; }
-      60% { transform: scale(1.06); }
-      100% { transform: scale(1); opacity: 1; }
-    }
-
-    .counter {
-      margin-top: 1.25rem;
-      font-size: 0.88rem;
-      font-weight: 700;
-      color: #a06040;
-      animation: fadeUp 0.8s 0.4s ease both;
-    }
-    .counter strong { color: var(--coral); }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(28px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── FEATURES ── */
-    .features {
-      background: var(--warm);
-      padding: 6rem 1.5rem;
-    }
-    .section-title {
-      font-family: 'Fraunces', serif;
-      font-size: clamp(2.2rem, 5vw, 3.5rem);
-      font-weight: 900;
-      text-align: center;
-      line-height: 1.1;
-      margin-bottom: 0.75rem;
-      letter-spacing: -1px;
-    }
-    .section-sub {
-      text-align: center;
-      color: #7a4020;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 3.5rem;
-    }
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-    .card {
-      background: #fff;
-      border-radius: 24px;
-      padding: 2rem 1.75rem;
-      border: 2px solid rgba(245,166,35,0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .card:hover {
-      transform: translateY(-6px);
-      box-shadow: 0 12px 40px rgba(240,122,90,0.15);
-    }
-    .card-icon {
-      font-size: 2.8rem;
-      margin-bottom: 1rem;
-      display: block;
-    }
-    .card h3 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 0.6rem;
-      color: var(--bark);
-    }
-    .card p {
-      font-size: 0.95rem;
-      color: #7a4020;
-      line-height: 1.6;
-      font-weight: 600;
-    }
-
-    /* ── HOW ── */
-    .how {
-      padding: 6rem 1.5rem;
-      text-align: center;
-    }
-    .steps {
-      display: flex;
-      gap: 2rem;
-      max-width: 850px;
-      margin: 0 auto;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .step {
-      flex: 1; min-width: 200px; max-width: 260px;
-      position: relative;
-    }
-    .step-num {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      background: var(--sun);
-      color: #fff;
-      font-family: 'Fraunces', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 1rem;
-    }
-    .step h4 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
-    }
-    .step p { font-size: 0.9rem; color: #7a4020; font-weight: 600; line-height: 1.5; }
-
-    /* connector */
-    .step:not(:last-child)::after {
-      content: '→';
-      position: absolute;
-      top: 1rem; right: -1.2rem;
-      font-size: 1.5rem;
-      color: var(--sun);
-      display: none;
-    }
-    @media (min-width: 700px) {
-      .step:not(:last-child)::after { display: block; }
-    }
-
-    /* ── TESTIMONIALS ── */
-    .testimonials {
-      background: var(--warm);
-      padding: 6rem 1.5rem;
-    }
-    .testi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
-      max-width: 960px;
-      margin: 0 auto;
-    }
-    .testi {
-      background: #fff;
-      border-radius: 20px;
-      padding: 1.75rem;
-      border-left: 4px solid var(--coral);
-    }
-    .testi p {
-      font-style: italic;
-      font-size: 1rem;
-      color: #5a2c0e;
-      line-height: 1.65;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
-    .testi-author {
-      display: flex; align-items: center; gap: 0.75rem;
-    }
-    .avatar {
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--sun), var(--coral));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; color: #fff; font-size: 1rem;
-    }
-    .testi-name { font-weight: 800; font-size: 0.9rem; }
-    .testi-loc  { font-size: 0.8rem; color: #9a6030; font-weight: 600; }
-
-    /* ── CTA BOTTOM ── */
-    .cta-bottom {
-      padding: 7rem 1.5rem;
-      text-align: center;
-      background: var(--bark);
-      position: relative;
-      overflow: hidden;
-    }
-    .cta-bottom::before {
-      content: '';
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(245,166,35,0.15), transparent 60%),
-                  radial-gradient(ellipse at 70% 50%, rgba(240,122,90,0.12), transparent 60%);
-      pointer-events: none;
-    }
-    .cta-bottom .section-title { color: #fff; }
-    .cta-bottom .section-sub   { color: #d4a070; }
-    .cta-bottom .waitlist-form { margin: 0 auto; }
-    .cta-bottom .counter { color: #d4a070; }
-    .cta-bottom .counter strong { color: var(--sun); }
-
-    /* ── FOOTER ── */
-    footer {
-      background: #2a1005;
-      color: #9a6a40;
-      text-align: center;
-      padding: 2rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-    footer a { color: var(--sun); text-decoration: none; }
-
-    /* ── SCROLL REVEAL ── */
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
-  </style>
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 
@@ -512,45 +108,99 @@
   </div>
 </section>
 
-<!-- TESTIMONIALS -->
-<section class="testimonials" id="historias">
-  <h2 class="section-title reveal">Lo que dicen las familias</h2>
-  <p class="section-sub reveal">Todavía en beta, pero las sonrisas ya llegaron.</p>
 
-  <div class="testi-grid">
-    <div class="testi reveal">
-      <p>"Mi mamá tiene 82 años y ya llama sola a sus nietos. Es un milagro. Antes me llamaba a mí para que le ayudara con el teléfono."</p>
-      <div class="testi-author">
-        <div class="avatar">MC</div>
-        <div>
-          <div class="testi-name">María Cristina</div>
-          <div class="testi-loc">Ciudad de México 🇲🇽</div>
+<!-- CARRUSEL DE FUNCIONES -->
+<section class="funciones-carousel" id="funciones-demo">
+  <h2 class="section-title reveal">¿Qué puedes hacer hoy?</h2>
+  <p class="section-sub reveal">Funciona ahora mismo en tu navegador. Sin instalar nada.</p>
+
+  <div class="carousel-wrap">
+    <div class="carousel-track" id="carousel-track">
+
+      <div class="carousel-slide">
+        <div class="slide-icon">💊</div>
+        <div class="slide-content">
+          <h3>Medicamentos al día</h3>
+          <p>Registra cada medicamento con nombre, dosis y hora. Un solo toque para marcar si lo tomó. Toda la familia lo ve en tiempo real.</p>
+          <div class="slide-badge">Disponible ahora</div>
         </div>
       </div>
-    </div>
-    <div class="testi reveal">
-      <p>"Papá juega cada mañana al crucigrama. Dice que le pone el cerebro en marcha. Desde que la usa está más contento y más activo."</p>
-      <div class="testi-author">
-        <div class="avatar">JR</div>
-        <div>
-          <div class="testi-name">Javier Ruiz</div>
-          <div class="testi-loc">Buenos Aires 🇦🇷</div>
+
+      <div class="carousel-slide">
+        <div class="slide-icon">🕯️</div>
+        <div class="slide-content">
+          <h3>Cápsulas de Vida</h3>
+          <p>Graba mensajes de voz que se guardan para siempre. Para cuando se gradúe, para cuando esté triste, para cuando ya no estés. Tu voz, eterna.</p>
+          <div class="slide-badge slide-badge-special">Lo más especial</div>
         </div>
       </div>
-    </div>
-    <div class="testi reveal">
-      <p>"Mi abuela cumplió 90 años y pidió que le pusieran la app en el móvil. Ahora ve las fotos de los bisnietos cada día. Llora de alegría."</p>
-      <div class="testi-author">
-        <div class="avatar">LS</div>
-        <div>
-          <div class="testi-name">Laura Sánchez</div>
-          <div class="testi-loc">Madrid 🇪🇸</div>
+
+      <div class="carousel-slide">
+        <div class="slide-icon">💙</div>
+        <div class="slide-content">
+          <h3>Diario del Cuidador</h3>
+          <p>Tú también importas. Un espacio íntimo para registrar cómo te sientes. Porque quien cuida también necesita que lo cuiden.</p>
+          <div class="slide-badge">Para el cuidador</div>
         </div>
       </div>
+
+      <div class="carousel-slide">
+        <div class="slide-icon">💰</div>
+        <div class="slide-content">
+          <h3>Control de Gastos</h3>
+          <p>Registra medicinas, alimentos, transporte. Establece una meta mensual. Toda la familia sabe en qué se gasta y cuánto queda.</p>
+          <div class="slide-badge">Sin sorpresas</div>
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="slide-icon">📋</div>
+        <div class="slide-content">
+          <h3>Tablero Familiar</h3>
+          <p>Notas para todos los cuidadores. "Le di las pastillas a las 8." "Tiene cita el jueves." Sin WhatsApp, sin confusión, todos en la misma página.</p>
+          <div class="slide-badge">Coordinación real</div>
+        </div>
+      </div>
+
+      <div class="carousel-slide">
+        <div class="slide-icon">🔊</div>
+        <div class="slide-content">
+          <h3>Diseñada para todos</h3>
+          <p>Guía de voz paso a paso para personas con discapacidad visual. Botones grandes, letras claras, sin tecnicismos. El abuelito la usa solo.</p>
+          <div class="slide-badge">Accesible 100%</div>
+        </div>
+      </div>
+
     </div>
+
+    <!-- Controles -->
+    <button class="carousel-btn carousel-prev" onclick="prevSlide()" aria-label="Anterior">&#8592;</button>
+    <button class="carousel-btn carousel-next" onclick="nextSlide()" aria-label="Siguiente">&#8594;</button>
+
+    <!-- Dots -->
+    <div class="carousel-dots" id="carousel-dots"></div>
   </div>
 </section>
 
+<!-- KO-FI — APOYA EL PROYECTO -->
+<section class="kofi-section" id="apoyar">
+  <div class="kofi-inner reveal">
+    <div class="kofi-emoji">☕</div>
+    <h2 class="kofi-title">¿Te gustó lo que ves?</h2>
+    <p class="kofi-sub">
+      Esta app la construí para unir a las familias, desde Venezuela para el mundo, cuidando a mi mamá de 81 años.<br/>
+      Sin equipo. Sin inversores. Solo con amor y código.<br/><br/>
+      Si crees que algo así merece existir en el mundo,<br/>
+      <strong>un café me ayuda a mantenerlo vivo.</strong>
+    </p>
+    <a href="https://ko-fi.com/dimicasopcdev" target="_blank" class="kofi-btn">
+      ☕ Invitarme un café en Ko-fi
+    </a>
+    <p class="kofi-hint">100% voluntario · Cualquier monto ayuda · Gracias desde el alma 💛</p>
+  </div>
+</section>
+
+   
 <!-- CTA BOTTOM -->
 <section class="cta-bottom" id="lista">
   <h2 class="section-title reveal">Sé el primero en saberlo 🌟</h2>
@@ -566,115 +216,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2025 Abuelitos Contentos · <a href="/cdn-cgi/l/email-protection#b3dbdcdfd2f3d2d1c6d6dfdac7dcc0d0dcddc7d6ddc7dcc09dd0dcde"><span class="__cf_email__" data-cfemail="8be3e4e7eacbeae9feeee7e2ffe4f8e8e4e5ffeee5ffe4f8a5e8e4e6">[email&#160;protected]</span></a> · Hecho con ❤️ para los abuelos del mundo</p>
+  <p>© 2026 Abuelitos Contentos · hola@abuelitoscontentos.com · Hecho con ❤️ para los abuelos del mundo</p>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  /* ── Floating icons ── */
-  const icons = ['💛','🌻','⭐','🎵','📞','🌸','💊','😄','🏡','☀️','🌈','❤️'];
-  const cont = document.getElementById('floaters');
-  for(let i = 0; i < 22; i++) {
-    const s = document.createElement('span');
-    s.textContent = icons[Math.floor(Math.random()*icons.length)];
-    s.style.left   = Math.random()*100 + '%';
-    s.style.top    = Math.random()*100 + '%';
-    s.style.animationDuration = (14 + Math.random()*14) + 's';
-    s.style.animationDelay   = (Math.random()*12) + 's';
-    s.style.fontSize = (1.2 + Math.random()*1.2) + 'rem';
-    cont.appendChild(s);
-  }
-
-  /* ── Waitlist — conectado a la API real ── */
-  async function fetchCount() {
-    try {
-      const r = await fetch('/api/waitlist/count');
-      const d = await r.json();
-      document.getElementById('num-hero').textContent   = d.total.toLocaleString('es');
-      document.getElementById('num-bottom').textContent = d.total.toLocaleString('es');
-    } catch(e) {
-      // si la API no está disponible, mostramos un número estimado
-      const n = 347 + Math.floor(Math.random()*53);
-      document.getElementById('num-hero').textContent   = n.toLocaleString('es');
-      document.getElementById('num-bottom').textContent = n.toLocaleString('es');
-    }
-  }
-  fetchCount();
-
-  async function registrar(inputId, successId) {
-    const input = document.getElementById(inputId);
-    const email = input.value.trim().toLowerCase();
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      input.style.outline = '2px solid #E8567A';
-      input.focus();
-      setTimeout(() => input.style.outline = '', 1500);
-      return;
-    }
-
-    const btn = input.nextElementSibling;
-    btn.textContent = 'Enviando…';
-    btn.disabled = true;
-
-    try {
-      const res = await fetch('/api/waitlist', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
-      });
-      const data = await res.json();
-      if(data.ok) {
-        input.closest('.waitlist-form').style.display = 'none';
-        const ok = document.getElementById(successId);
-        ok.style.display = 'flex';
-        launchConfetti();
-        fetchCount();
-      } else {
-        btn.textContent = '¡Me apunto! 🎉';
-        btn.disabled = false;
-        alert('Hubo un error. Inténtalo de nuevo.');
-      }
-    } catch(e) {
-      btn.textContent = '¡Me apunto! 🎉';
-      btn.disabled = false;
-      alert('Sin conexión. Inténtalo de nuevo.');
-    }
-  }
-
-  /* ── Tiny confetti ── */
-  function launchConfetti() {
-    const colors = ['#F5A623','#F07A5A','#E8567A','#4A7C59','#5B9EC9'];
-    for(let i = 0; i < 40; i++) {
-      const d = document.createElement('div');
-      const size = 6 + Math.random()*8;
-      d.style.cssText = `
-        position:fixed; z-index:9999;
-        width:${size}px; height:${size}px;
-        background:${colors[Math.floor(Math.random()*colors.length)]};
-        border-radius:${Math.random()>0.5?'50%':'2px'};
-        left:${30+Math.random()*40}%;
-        top:50%;
-        pointer-events:none;
-        animation: cfall ${1+Math.random()*1.5}s ease forwards;
-        animation-delay: ${Math.random()*0.4}s;
-      `;
-      document.body.appendChild(d);
-      setTimeout(()=>d.remove(), 2500);
-    }
-  }
-  const cStyle = document.createElement('style');
-  cStyle.textContent = `
-    @keyframes cfall {
-      0% { transform: translate(0,0) rotate(0deg); opacity:1; }
-      100% { transform: translate(${() => (Math.random()-0.5)*200}px, -${150+Math.random()*200}px) rotate(720deg); opacity:0; }
-    }
-  `;
-  document.head.appendChild(cStyle);
-
-  /* ── Scroll reveal ── */
-  const obs = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
-
-  /* ── Enter key on inputs ── */
-  document.getElementById('email-hero').addEventListener('keydown', e => {
-    if(e.key === 'Enter'
+<script src="js/main.js" defer></script>
