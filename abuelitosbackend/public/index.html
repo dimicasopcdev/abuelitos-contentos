@@ -8,7 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css">
+  <link rel="manifest" href="/manifest.json"/>\n  <meta name="theme-color" content="#F5A623"/>
 </head>
+
+<script>if("serviceWorker" in navigator){navigator.serviceWorker.register("/sw.js");}</script>
+
 <body>
 
 <!-- NAV -->
@@ -186,12 +190,14 @@
 <section class="kofi-section" id="apoyar">
   <div class="kofi-inner reveal">
     <div class="kofi-emoji">☕</div>
-    <h2 class="kofi-title">¿Te gustó lo que ves?</h2>
+    <h2 class="kofi-title">¿Te gusta lo que ves y lo que puedes apoyar a tu familia?</h2>
     <p class="kofi-sub">
-      Esta app la construí para unir a las familias, desde Venezuela para el mundo, cuidando a mi mamá de 81 años.<br/>
-      Sin equipo. Sin inversores. Solo con amor y código.<br/><br/>
+      Esta app esta en construcción, para unir a las familias del mundo<br/>
+      en el cuidado de nuestros Padres y Abuelos que es nuestro deber<br/> y una hermosa responsabilidad en la vida.<br/><br/>
+    
       Si crees que algo así merece existir en el mundo,<br/>
-      <strong>un café me ayuda a mantenerlo vivo.</strong>
+      <strong>Un café (o dos) me ayudan a terminarlo y a mantenerlo vivo.</strong>
+      <strong>Gracias por tu apoyo, de corazón ❤️.</strong>
     </p>
     <a href="https://ko-fi.com/dimicasopcdev" target="_blank" class="kofi-btn">
       ☕ Invitarme un café en Ko-fi
@@ -216,7 +222,7 @@
 
 <!-- FOOTER -->
 <footer>
-  <p>© 2026 Abuelitos Contentos · hola@abuelitoscontentos.com · Hecho con ❤️ para los abuelos del mundo</p>
+  <p>© 2026 Abuelitos Contentos · Escribeme a: hola@abuelitoscontentos.com · Hecho con ❤️ para los abuelos del mundo</p>
 </footer>
 
 <script src="js/main.js" defer></script>

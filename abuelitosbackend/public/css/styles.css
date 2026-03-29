@@ -429,59 +429,6 @@ h1 .underlined::after {
   }
 }
 
-/* ── TESTIMONIALS ── */
-.testimonials {
-  background: var(--warm);
-  padding: 6rem 1.5rem;
-}
-.testi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  max-width: 960px;
-  margin: 0 auto;
-}
-.testi {
-  background: #fff;
-  border-radius: 20px;
-  padding: 1.75rem;
-  border-left: 4px solid var(--coral);
-}
-.testi p {
-  font-style: italic;
-  font-size: 1rem;
-  color: #5a2c0e;
-  line-height: 1.65;
-  margin-bottom: 1rem;
-  font-weight: 600;
-}
-.testi-author {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-}
-.avatar {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--sun), var(--coral));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  color: #fff;
-  font-size: 1rem;
-}
-.testi-name {
-  font-weight: 800;
-  font-size: 0.9rem;
-}
-.testi-loc {
-  font-size: 0.8rem;
-  color: #9a6030;
-  font-weight: 600;
-}
-
 /* ── CTA BOTTOM ── */
 .cta-bottom {
   padding: 7rem 1.5rem;
@@ -551,6 +498,7 @@ footer a {
 }
 
 /* ── CARRUSEL ── */
+
 .funciones-carousel {
   padding: 5rem 1.5rem;
   background: var(--cream);
@@ -562,6 +510,7 @@ footer a {
   position: relative;
   overflow: hidden; 
   border-radius: 24px;
+  padding: 0 30px;
 }
 
 .carousel-track {
@@ -637,10 +586,10 @@ footer a {
   border-color: var(--sun);
 }
 .carousel-prev {
-  left: -22px;
+  left: 0;
 }
 .carousel-next {
-  right: -22px;
+  right: 0;
 }
 .carousel-dots {
   display: flex;
