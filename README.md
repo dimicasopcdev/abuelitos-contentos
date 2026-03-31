@@ -7,13 +7,13 @@
 
 ## 💛 La historia detrás del proyecto
 
-Me llamo Dimitry. Soy cuidador de mi mamá, que tiene 81 años y tiene incapacidad visual de 80%. No salgo de casa porque la cuido todos los días.
+Me llamo Dimitry. Soy cuidador de mi mamá, que tiene 81 años y tiene discapacidad visual de 80%. No salgo casi de casa porque me toca apoyarla todos los días.
 
 Un día pensé: si yo tengo este problema, ¿cuántas familias más lo tienen?
 
 Cuidar a un adulto mayor es un acto de amor. Pero también es agotador, solitario, y difícil de coordinar cuando la familia está separada. 
 
-Nadie sabe si tomó las pastillas. Nadie registra cómo se siente el cuidador. Nadie guarda esas historias que se van con el tiempo.
+Nadie sabe si tomó las pastillas sino yo. Nadie conoce realmente cómo se siente el cuidador a diario. Nadie guarda esas historias contadas por ella que se van con el tiempo.
 
 **Abuelitos Contentos nació de esa realidad.**
 
